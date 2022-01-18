@@ -11,6 +11,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, UuidTrait;
+    
+    public $incrementing = false;
+    protected $keyType = 'uuid';
 
     /**
      * The attributes that are mass assignable.
