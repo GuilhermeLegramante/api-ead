@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\Course;
-use App\Models\Traits\UuidTrait;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Traits\UuidTrait;
 
-class Module extends Model
+class Lesson extends Model
 {
     use HasFactory, UuidTrait;
 
@@ -15,11 +14,13 @@ class Module extends Model
     protected $keyType = 'uuid';
     
     protected $fillable = [
-        'name'
+        'name',
+        'description',
+        'video'
     ];
 
-    public function course()
+    public function module()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Module::class);
     }
 }
