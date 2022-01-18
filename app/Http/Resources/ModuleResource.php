@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CourseResource extends JsonResource
+class ModuleResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,9 +18,6 @@ class CourseResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'description' => $this->description,
-            'image' => $this->image ? Storage::url($this->image) : '',
         ];
     }
-    
 }
