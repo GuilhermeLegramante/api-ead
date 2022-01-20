@@ -2,31 +2,24 @@
 
 namespace App\Repositories;
 
-use App\Models\Support;
-use App\Models\User;
+use App\Models\ReplySupport;
 use App\Repositories\Traits\RepositoryTrait;
 
-class SupportRepository
+class ReplySupportRepository
 {
     use RepositoryTrait;
 
     protected $entity;
 
-    public function __construct(Support $model)
+    public function __construct(ReplySupport $model)
     {
         $this->entity = $model;
     }
 
-    public function allFromUser(array $filters = [])
-    {
-        $filters['user'] = true;
-
-        return $this->all($filters);
-    }
-
     public function all(array $filters = [])
     {
-        return $this->entity
+        return $this->getUserAuth()
+            ->supports()
             ->where(function ($query) use ($filters) {
                 if (isset($filters['lesson'])) {
                     $query->where('lesson_id', $filters['lesson']);
@@ -40,11 +33,6 @@ class SupportRepository
                     $filter = $filters['filter'];
                     $query->where('description', 'LIKE', "'%{$filter}%");
                 }
-
-                if (isset($filters['user'])) {
-                    $user = $this->getUserAuth();
-                    $query->where('user_id', $user->id);
-                }
             })
             ->orderBy('updated_at')
             ->get();
@@ -55,19 +43,18 @@ class SupportRepository
         return $this->entity->findOrFail($id);
     }
 
-    public function create(array $data): Support
+    public function store(array $data)
     {
-        $support = $this->getUserAuth()
-            ->supports()
+        $user = $this->getUserAuth();
+
+        $reply = $this->entity
             ->create([
-                'lesson_id' => $data['lesson'],
+                'support_id' => $data['support'],
                 'description' => $data['description'],
-                'status' => $data['status'],
+                'user_id' => $user->id,
             ]);
 
-        return $support;
+        return $reply;
     }
 
- 
-    
 }

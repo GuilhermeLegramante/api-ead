@@ -9,12 +9,13 @@ use App\Http\Resources\SupportResource;
 use App\Repositories\SupportRepository;
 use App\Http\Requests\StoreReplySupport;
 use App\Http\Resources\ReplySupportResource;
+use App\Repositories\ReplySupportRepository;
 
-class SupportController extends Controller
+class ReplySupportController extends Controller
 {
     protected $repository;
 
-    public function __construct(SupportRepository $repository)
+    public function __construct(ReplySupportRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -26,18 +27,10 @@ class SupportController extends Controller
         return SupportResource::collection($supports);
     }
 
-    public function store(StoreSupport $request)
+    public function store(StoreReplySupport $request)
     {
-        $support = $this->repository
-                        ->create($request->validated());
+        $reply = $this->repository->store($request->validated());
 
-        return new SupportResource($support);
-    }
-
-    public function indexFromUser(Request $request)
-    {
-        $supports = $this->repository->allFromUser($request->all());
-
-        return SupportResource::collection($supports);
+        return new ReplySupportResource($reply);
     }
 }
