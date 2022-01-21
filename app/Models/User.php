@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Support;
 use App\Models\Traits\UuidTrait;
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -50,6 +51,11 @@ class User extends Authenticatable
     public function supports()
     {
         return $this->hasMany(Support::class);
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 
 }
