@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\View;
 use App\Models\Support;
 use App\Models\Traits\UuidTrait;
-use App\Notifications\ResetPasswordNotification;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -58,4 +59,8 @@ class User extends Authenticatable
         $this->notify(new ResetPasswordNotification($token));
     }
 
+    public function views()
+    {
+        return $this->hasMany(View::class);
+    }
 }
