@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\ViewResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class LessonResource extends JsonResource
@@ -18,8 +18,9 @@ class LessonResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => ucwords(strtolower($this->name)),
-            'description' => ucwords(strtolower($this->description)),
+            'description' => $this->description,
             'video' => $this->video,
+            'views' => ViewResource::collection($this->whenLoaded('views')),
         ];
     }
 }

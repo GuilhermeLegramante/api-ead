@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Module;
 
-class ModuleRepository 
+class ModuleRepository
 {
     protected $entity;
 
@@ -26,6 +26,7 @@ class ModuleRepository
     public function getModulesByCourseId(string $courseId)
     {
         return $this->entity
+            ->with('lessons.views')
             ->where('course_id', $courseId)
             ->get();
     }

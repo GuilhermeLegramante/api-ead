@@ -24,6 +24,11 @@ class LessonController extends Controller
         return LessonResource::collection($lessons);
     }
 
+    public function show($id)
+    {
+        return new LessonResource($this->repository->findById($id));
+    }
+
     public function viewed(StoreView $request)
     {
         $this->repository->markLessonViewed($request->lesson);
